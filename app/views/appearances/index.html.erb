@@ -1,0 +1,7 @@
+<% if current_user %>
+	<%= link_to "Create New Appearance", new_appearance_path %>
+<% end %>
+
+<% @appearances.each do |a| %>
+	<p> <%= link_to a.guest.name, guest_path(a.guest) %> appeared in episode: <%= link_to a.episode.number, episode_path(a.episode) %>. Rated at: <%= a.rating %></p>
+<% end %>

@@ -1,22 +1,22 @@
 class SessionsController < ApplicationController
 
   def new
-    @session = session[:name]
+    @user = User.new
   end
 
   def create
-    if session_params.blank?
-      redirect_to :signup
-    else
-      current_user = params[:name]
-      redirect_to guests_path
-    end
+    user = User.find_by(username: params[:username])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect_to appearances_path
+   else
+     redirect_to login_path
+   end
   end
 
-  private
-
-  def session_params
-    params.permit(:user).permit(:username, :password_digest)
+  def destroy
+    session.clear
+    redirect_to login_path
   end
 
 end
